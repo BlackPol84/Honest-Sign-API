@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -65,7 +64,7 @@ public class CrptApi {
                 }
             } else {
                 try {
-                    wait(timeUnit.toMillis(1) - timeDiff);
+                    Thread.sleep(timeUnit.toMillis(duration) - timeDiff);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
@@ -79,7 +78,56 @@ public class CrptApi {
 
     public static void main(String[] args) {
 
-        CrptApi api = new CrptApi(TimeUnit.SECONDS, 1L, 10);
+        CrptApi api = new CrptApi(TimeUnit.SECONDS, 5L, 1);
+
+        Document document1 = new Document(new Description("name1"), "name1", "name1",
+                "name1", true, "name1", "name1", "name1",
+                LocalDate.of(2024, 6, 29), "name1",
+                List.of(new Product("name1", LocalDate.of(2024, 6, 29), "name1",
+                        "name1", "name1", LocalDate.of(2024, 6, 29), "name1",
+                        "name1", "name1")), LocalDate.of(2024, 6, 29), "name1");
+
+        Document document2 = new Document(new Description("name2"), "name2", "name2",
+                "name2", true, "name2", "name2", "name2",
+                LocalDate.of(2024, 6, 29), "name2",
+                List.of(new Product("name2", LocalDate.of(2024, 6, 29), "name1",
+                        "name2", "name2", LocalDate.of(2024, 6, 29), "name1",
+                        "name2", "name2")), LocalDate.of(2024, 6, 29), "name1");
+
+        Document document3 = new Document(new Description("name3"), "name3", "name3",
+                "name3", true, "name3", "name3", "name3",
+                LocalDate.of(2024, 6, 29), "name3",
+                List.of(new Product("name3", LocalDate.of(2024, 6, 29), "name1",
+                        "name3", "name3", LocalDate.of(2024, 6, 29), "name1",
+                        "name3", "name3")), LocalDate.of(2024, 6, 29), "name1");
+
+        Runnable rn1 = () -> {
+            try {
+                api.createDocument(document1, "signature1");
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        Runnable rn2 = () -> {
+            try {
+                api.createDocument(document2, "signature2");
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        Runnable rn3 = () -> {
+            try {
+                api.createDocument(document3, "signature3");
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        };
+
+        new Thread(rn1, "thread1").start();
+        new Thread(rn2, "thread2").start();
+        new Thread(rn3, "thread3").start();
     }
 
     @Setter
