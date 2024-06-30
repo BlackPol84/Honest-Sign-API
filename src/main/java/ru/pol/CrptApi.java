@@ -68,6 +68,7 @@ public class CrptApi {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                createDocument(doc, signature);
             }
     }
 
