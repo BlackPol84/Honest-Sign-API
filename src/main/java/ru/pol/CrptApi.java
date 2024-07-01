@@ -1,7 +1,7 @@
 package ru.pol;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -25,8 +25,8 @@ public class CrptApi {
     private final TimeUnit timeUnit;
     private final long duration;
     private final int requestLimit;
-    private AtomicInteger requestCount;
-    private AtomicLong lastRequestTime;
+    private final AtomicInteger requestCount;
+    private final AtomicLong lastRequestTime;
 
     public CrptApi(TimeUnit timeUnit, long duration, int requestLimit) {
         this.timeUnit = timeUnit;
@@ -137,132 +137,59 @@ public class CrptApi {
     @AllArgsConstructor
     public static class Document {
         private Description description;
+        @JsonProperty("doc_id")
         private String docId;
+        @JsonProperty("doc_status")
         private String docStatus;
+        @JsonProperty("doc_type")
         private String docType;
+        @JsonProperty("importRequest")
         private boolean importRequest;
+        @JsonProperty("owner_inn")
         private String ownerInn;
+        @JsonProperty("participant_inn")
         private String participantInn;
+        @JsonProperty("producer_inn")
         private String producerInn;
+        @JsonProperty("production_date")
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate productionDate;
+        @JsonProperty("production_type")
         private String productionType;
+        @JsonProperty("products")
         private List<Product> products;
+        @JsonProperty("reg_date")
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate regDate;
+        @JsonProperty("reg_number")
         private String regNumber;
-
-        @JsonGetter("doc_id")
-        public String getDocId() {
-            return docId;
-        }
-
-        @JsonGetter("doc_status")
-        public String getDocStatus() {
-            return docStatus;
-        }
-
-        @JsonGetter("doc_type")
-        public String getDocType() {
-            return docType;
-        }
-
-        @JsonGetter("owner_inn")
-        public String getOwnerInn() {
-            return ownerInn;
-        }
-
-        @JsonGetter("participant_inn")
-        public String getParticipantInn() {
-            return participantInn;
-        }
-
-        @JsonGetter("producer_inn")
-        public String getProducerInn() {
-            return producerInn;
-        }
-
-        @JsonGetter("production_date")
-        public LocalDate getProductionDate() {
-            return productionDate;
-        }
-
-        @JsonGetter("production_type")
-        public String getProductionType() {
-            return productionType;
-        }
-
-        @JsonGetter("reg_date")
-        public LocalDate getRegDate() {
-            return regDate;
-        }
-
-        @JsonGetter("reg_number")
-        public String getRegNumber() {
-            return regNumber;
-        }
     }
 
     @Setter
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Product {
+        @JsonProperty("certificate_document")
         private String certificateDocument;
+        @JsonProperty("certificate_document_date")
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate certificateDocumentDate;
+        @JsonProperty("certificate_document_number")
         private String certificateDocumentNumber;
+        @JsonProperty("owner_inn")
         private String ownerInn;
+        @JsonProperty("producer_inn")
         private String producerInn;
+        @JsonProperty("production_date")
         @JsonFormat(pattern = "yyyy-MM-dd")
         private LocalDate productionDate;
+        @JsonProperty("tnved_code")
         private String tnvedCode;
+        @JsonProperty("uit_code")
         private String uitCode;
+        @JsonProperty("uitu_code")
         private String uituCode;
-
-        @JsonGetter("certificate_document")
-        public String getCertificateDocument() {
-            return certificateDocument;
-        }
-
-        @JsonGetter("certificate_document_date")
-        public LocalDate getCertificateDocumentDate() {
-            return certificateDocumentDate;
-        }
-
-        @JsonGetter("certificate_document_number")
-        public String getCertificateDocumentNumber() {
-            return certificateDocumentNumber;
-        }
-
-        @JsonGetter("owner_inn")
-        public String getOwnerInn() {
-            return ownerInn;
-        }
-
-        @JsonGetter("producer_inn")
-        public String getProducerInn() {
-            return producerInn;
-        }
-
-        @JsonGetter("production_date")
-        public LocalDate getProductionDate() {
-            return productionDate;
-        }
-
-        @JsonGetter("tnved_code")
-        public String getTnvedCode() {
-            return tnvedCode;
-        }
-
-        @JsonGetter("uit_code")
-        public String getUitCode() {
-            return uitCode;
-        }
-
-        @JsonGetter("uitu_code")
-        public String getUituCode() {
-            return uituCode;
-        }
     }
 
     @Setter
